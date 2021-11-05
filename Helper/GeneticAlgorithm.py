@@ -7,6 +7,7 @@ class GeneticAlgorithm:
         self.population = []
         self.mutation_rate = mutation_rate
         self.best_individual = None
+        self.list_best = []
 
         for _ in range(self.population_size):
             new_dna = DNA(boundaries, boundaries_type)
@@ -14,6 +15,9 @@ class GeneticAlgorithm:
 
     def get_population(self):
         return self.population
+
+    def get_list_best(self):
+        return self.list_best
 
     def print_population(self):
         for i in range(len(self.population)):
@@ -38,6 +42,7 @@ class GeneticAlgorithm:
 
         if(self.best_individual == None or self.best_individual.get_fitness() < i.get_fitness()):
             self.best_individual = i
+            self.list_best.append(i.get_fitness())
 
     def print_best_solution(self):
         print("Best Individual: Parameters:({}, {}) Fitness: {}".format(self.best_individual.get_parameters()[0], self.best_individual.get_parameters()[1], self.best_individual.get_fitness()))

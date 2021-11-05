@@ -1,6 +1,8 @@
 from sklearn.neural_network import MLPRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import r2_score
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import RepeatedKFold
 import random
 import numpy as npy
@@ -33,12 +35,33 @@ class Model():
     def predict(self, x_test):
         return self.model.predict(x_test)
 
+    def evaluate_AdjustedR2(self, y_test, predicted):
+        n = len(y_test)
+        k = len(y_test[0])
+        print(n)
+        print(k)
+        r2 = r2_score(y_test, predicted)
+        adj_r2 = 1 - ((1 - r2) * (n - 1) / (n - k - 1))
+        return adj_r2
+
     def evaluate_R2(self, y_test, predicted):
         return r2_score(y_test, predicted)
 
-    def fit_predict_evaluate(self, n_splits, n_repeats):
+    def evaluate_MAE(self, y_test, predicted):
+        return mean_absolute_error(y_test, predicted)
+
+    def evaluate_MSE(self, y_test, predicted):
+        return mean_squared_error(y_test, predicted)
+
+    def evaluate_RMSE(self, y_test, predicted):
+        return npy.sqrt(mean_squared_error(y_test, predicted))
+
+    def evaluate_RMSLE(self, y_test, predicted):
+        return np.log(npy.sqrt(mean_squared_error(y_test, predicted)))
+
+    def fit_predict_evaluate(self, n_splits, n_repeats, metric = 'r2'):
         kf = RepeatedKFold(n_splits=n_splits, n_repeats=n_repeats)
-        self.r2score = []
+        self.score = []
 
         for train_index, test_index in kf.split(self.X):
             x_train, x_test = self.X[train_index], self.X[test_index]
@@ -46,6 +69,17 @@ class Model():
 
             self.fit(x_train, y_train)
             predicted = self.predict(x_test)
-            self.r2score.append(self.evaluate_R2(y_test, predicted))
+            if(metric == 'r2'):
+                self.score.append(self.evaluate_R2(y_test, predicted))
+            elif(metric == 'mae'):
+                self.score.append(self.evaluate_MAE(y_test, predicted))
+            elif(metric == 'mse'):
+                self.score.append(self.evaluate_MSE(y_test, predicted))
+            elif(metric == 'rmse'):
+                self.score.append(self.evaluate_RMSE(y_test, predicted))
+            elif(metric == 'rmsle'):
+                self.score.append(self.evaluate_RMSLE(y_test, predicted))
+            elif(metric == 'adjusted_r2'):
+                self.score.append(self.evaluate_AdjustedR2(y_test, predicted))
 
-        return npy.mean(self.r2score)
+        return npy.mean(self.score)

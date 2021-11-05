@@ -7,6 +7,7 @@ class PSO:
         self.population = []
         self.g_best_particle = None
         self.best_particle_swap = 0
+        self.list_best = []
         #PSO Coefficients Variable
         self.w = w
         self.c1 = c1
@@ -52,6 +53,10 @@ class PSO:
             if self.g_best_particle == None or self.g_best_particle.p_best_fitness < fitness_value:
                 self.set_gbest_particle(particle)
                 self.best_particle_swap += 1
+                self.list_best.append(fitness_value)
+
+    def get_list_best(self):
+        return self.list_best
 
     def get_position(self, index):
         return self.population[index].position
