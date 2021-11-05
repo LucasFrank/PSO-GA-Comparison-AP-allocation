@@ -54,7 +54,7 @@ class Model():
         return npy.sqrt(mean_squared_error(y_test, predicted))
 
     def evaluate_RMSLE(self, y_test, predicted):
-        return np.log(npy.sqrt(mean_squared_error(y_test, predicted)))
+        return npy.log(npy.sqrt(mean_squared_error(y_test, predicted)))
 
     def fit_predict_evaluate(self, n_splits, n_repeats, metric = 'r2'):
         kf = RepeatedKFold(n_splits=n_splits, n_repeats=n_repeats)
