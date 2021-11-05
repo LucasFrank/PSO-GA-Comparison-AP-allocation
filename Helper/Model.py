@@ -35,11 +35,8 @@ class Model():
     def predict(self, x_test):
         return self.model.predict(x_test)
 
-    def evaluate_AdjustedR2(self, y_test, predicted):
+    def evaluate_AdjustedR2(self, y_test, predicted, k):
         n = len(y_test)
-        k = len(y_test[0])
-        print(n)
-        print(k)
         r2 = r2_score(y_test, predicted)
         adj_r2 = 1 - ((1 - r2) * (n - 1) / (n - k - 1))
         return adj_r2
@@ -80,6 +77,8 @@ class Model():
             elif(metric == 'rmsle'):
                 self.score.append(self.evaluate_RMSLE(y_test, predicted))
             elif(metric == 'adjusted_r2'):
-                self.score.append(self.evaluate_AdjustedR2(y_test, predicted))
+                k = len(x_test[0])
+                r2 = self.evaluate_AdjustedR2(y_test, predicted, k)
+                self.score.append(r2)
 
         return npy.mean(self.score)
