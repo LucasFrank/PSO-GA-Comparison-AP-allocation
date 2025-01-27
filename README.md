@@ -21,4 +21,5 @@ This dataset can be used for various purposes such as:
 
 If you use this dataset in your research, please cite the following:
 
-Frank, Lucas R., et al. "Intelligent resource allocation in wireless networks: Predictive models for efficient access point management." Computer Networks 254 (2024): 110762.
+- Frank, L. R., Galletta, A., Carnevale, L., Vieira, A. B., & Silva, E. F. (2024). Intelligent resource allocation in wireless networks: Predictive models for efficient access point management. Computer Networks, 254, 110762.
+
